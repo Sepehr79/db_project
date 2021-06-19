@@ -9,8 +9,7 @@ class MyTestCase(unittest.TestCase):
     def testOpenConnection():
         """ Test connection to my database and execute query """
 
-        # Open connection
-        # host, port, user, database, password
+        # Open connection (host, port, user, database, password)
         database = Database("localhost", 5432, "postgres", "db_project", "s134s134")
 
         # Execute database schema from sql file
