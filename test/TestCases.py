@@ -5,8 +5,7 @@ from src.database import Database
 
 class MyTestCase(unittest.TestCase):
 
-    @staticmethod
-    def testOpenConnection():
+    def testOpenConnection(self):
         """ Test connection to my database and execute query """
 
         # Open connection (host, port, user, database, password)
@@ -22,6 +21,18 @@ class MyTestCase(unittest.TestCase):
 
         # Close connection
         database.close_connection()
+
+    def testExecuteSelectQueries(self):
+
+        file = open("../database/sql/select_queries.sql", "r")
+        sqls = file.read().split("\n")
+        file.close()
+
+        self.assertIsNotNone(sqls)
+        self.assertEqual(sqls[0], """set search_path to db_project;""")
+
+
+
 
 
 if __name__ == '__main__':
