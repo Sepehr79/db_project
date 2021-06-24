@@ -5,16 +5,20 @@ import psycopg2
 
 class Database:
 
-    def __init__(self, host, port, user, database, password):
+    def __init__(self, properties):
         """ Open connection """
 
-        self.conn = psycopg2.connect(
-            host=host,
-            database=database,
-            user=user,
-            password=password,
-            port=port
-        )
+        if isinstance(properties, dict):
+
+            self.conn = psycopg2.connect(
+                host=properties["host"],
+                database=properties["database_name"],
+                user=properties["database_user"],
+                password=properties["database_password"],
+                port=int(properties["port"])
+            )
+        else:
+            raise AttributeError("Please pass a dict type to the database constructor")
 
     def close_connection(self):
         self.conn.close()
@@ -48,3 +52,13 @@ class Database:
             cur.close()
         else:
             raise AttributeError(" Input must be str ")
+
+    def execute_query(self, query):
+        """ Execute any sql query in database """
+        if isinstance(query, str):
+            cur = self.conn.cursor()
+
+            cur.execute(query)
+            self.conn.commit()
+
+            cur.close()
